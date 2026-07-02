@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HyperText Markdown — hand the machine flawless context</title>
+<meta name="description" content="A review layer over any HTML document, PDF, or slide deck. Mark it up like a human — comment, box, highlight, move, talk — and local code compiles every mark into an AI-ready Markdown file. Offline. No account. Nothing uploaded." />
+<meta name="theme-color" content="#0e0e10" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="HyperText Markdown" />
+<meta property="og:title" content="HyperText Markdown — hand the machine flawless context" />
+<meta property="og:description" content="Mark up any HTML document, PDF, or slide deck. Local code compiles every mark into Markdown any AI can act on — offline, no account, nothing uploaded." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="HyperText Markdown — hand the machine flawless context" />
+<meta name="twitter:description" content="A beautiful, human way to hand flawless context to the machine." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================================
+   HyperText Markdown — landing page
+   Dark liquid glass: the same material language as the app — a dark
+   PowerPoint clone with iOS/macOS glass. Marks are brass on navy.
+   Fraunces = the human · JetBrains Mono = the machine · Inter = the UI.
+   ========================================================================== */
+
+:root{
+  --bg-0:#0e0e10;
+  --bg-1:#1a1a1e;
+  --glass:rgba(28,28,30,.68);
+  --glass-2:rgba(38,38,42,.55);
+  --hairline:rgba(255,255,255,.1);
+  --hairline-soft:rgba(255,255,255,.06);
+  --text:#f5f5f7;
+  --muted:#98989d;
+  --faint:#6e6e73;
+  --blue:#0a84ff;
+  --brass:#B08D57;
+  --brass-hi:#d9bb84;
+  --brass-soft:rgba(176,141,87,.14);
+  --navy:#0F2E3D;
+  --paper:#FBF7EE;
+  --paper-ink:#0F2E3D;
+  --md-key:#98989d;
+  --md-val:#e8e8ec;
+  --md-sel:#7cb8ff;
+  --r-panel:16px;
+  --r-el:12px;
+  --shadow-deep:0 30px 70px rgba(0,0,0,.55), 0 8px 24px rgba(0,0,0,.4);
+  --shadow-soft:0 14px 40px rgba(0,0,0,.35);
+  --serif:"Fraunces", Georgia, serif;
+  --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html{ scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+}
+
+body{
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  color:var(--text);
+  background:
+    radial-gradient(1100px 600px at 75% -10%, rgba(10,132,255,.10), transparent 60%),
+    radial-gradient(900px 700px at 8% 22%, rgba(176,141,87,.07), transparent 55%),
+    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 55%, var(--bg-0) 100%);
+  background-color:var(--bg-0);
+  -webkit-font-smoothing:antialiased;
+}
+
+::selection{ background:rgba(176,141,87,.35); color:var(--text); }
+
+.wrap{ max-width:1120px; margin:0 auto; padding:0 24px; }
+
+a{ color:var(--blue); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+
+.skip{
+  position:absolute; left:-9999px; top:0;
+  background:var(--blue); color:#fff; padding:8px 16px; border-radius:0 0 8px 0;
+}
+.skip:focus{ left:0; z-index:99; }
+
+/* ---------------------------------------------------------------- nav */
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(14,14,16,.72);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  backdrop-filter:blur(16px) saturate(160%);
+  border-bottom:1px solid var(--hairline-soft);
+}
+.nav-inner{
+  display:flex; align-items:center; gap:24px;
+  height:60px;
+}
+.wordmark{
+  font-family:var(--serif); font-weight:500; font-size:1.06rem;
+  color:var(--text); letter-spacing:.01em; white-space:nowrap;
+}
+.wordmark:hover{ text-decoration:none; }
+.wordmark .md-chip{
+  font-family:var(--mono); font-size:.72rem; font-weight:500;
+  color:var(--brass-hi);
+  border:1px solid var(--hairline); border-radius:6px;
+  padding:2px 6px; margin-left:7px; vertical-align:2px;
+  background:var(--brass-soft);
+}
+.nav-links{ display:flex; gap:22px; margin-left:auto; align-items:center; }
+.nav-links a{
+  color:var(--muted); font-size:.86rem; font-weight:500;
+}
+.nav-links a:hover{ color:var(--text); text-decoration:none; }
+.nav-cta{
+  color:var(--text) !important;
+  border:1px solid var(--hairline); border-radius:999px;
+  padding:7px 15px;
+  background:var(--glass-2);
+}
+.nav-cta:hover{ border-color:rgba(255,255,255,.22); }
+@media (max-width:760px){
+  .nav-links a:not(.nav-cta){ display:none; }
+}
+
+/* ---------------------------------------------------------------- hero */
+.hero{ padding:84px 0 40px; }
+.eyebrow{
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--brass-hi);
+  display:inline-flex; align-items:center; gap:10px;
+  border:1px solid var(--hairline); border-radius:999px;
+  padding:6px 14px; background:var(--glass-2);
+}
+.eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--brass); }
+h1{
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(2.2rem, 5.2vw, 3.7rem);
+  line-height:1.12; letter-spacing:-.012em;
+  margin:26px 0 20px; max-width:20ch;
+}
+h1 em{ font-style:italic; color:var(--brass-hi); }
+.hero-sub{
+  color:var(--muted); font-size:1.08rem; max-width:56ch; margin-bottom:14px;
+}
+.hero-sub strong{ color:var(--text); font-weight:500; }
+.hero-facts{
+  font-family:var(--mono); font-size:.78rem; color:var(--faint);
+  margin-bottom:30px;
+}
+.cta-row{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin-bottom:64px; }
+.btn{
+  display:inline-block; font-weight:500; font-size:.94rem;
+  border-radius:999px; padding:12px 24px;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.btn:hover{ text-decoration:none; transform:translateY(-1px); }
+.btn-primary{
+  background:var(--blue); color:#fff;
+  box-shadow:0 8px 24px rgba(10,132,255,.32);
+}
+.btn-primary:hover{ box-shadow:0 12px 30px rgba(10,132,255,.42); }
+.btn-ghost{
+  color:var(--muted); border:1px solid var(--hairline);
+  background:var(--glass-2); cursor:default;
+}
+.btn-ghost:hover{ color:var(--muted); border-color:var(--hairline); transform:none; }
+
+/* -------------------------------------------------- hero stage: app + md */
+.stage{
+  display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);
+  gap:26px; align-items:stretch;
+}
+@media (max-width:960px){ .stage{ grid-template-columns:1fr; } }
+
+.app{
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-panel);
+  box-shadow:var(--shadow-deep);
+  overflow:hidden;
+  display:flex; flex-direction:column;
+}
+
+/* title bar */
+.titlebar{
+  display:flex; align-items:center;
+  padding:10px 14px;
+  border-bottom:1px solid var(--hairline-soft);
+  background:rgba(255,255,255,.03);
+}
+.lights{ display:flex; gap:7px; }
+.lights i{ width:11px; height:11px; border-radius:50%; display:block; }
+.lights i:nth-child(1){ background:#ff5f57; }
+.lights i:nth-child(2){ background:#febc2e; }
+.lights i:nth-child(3){ background:#28c840; }
+.doc-name{
+  flex:1; text-align:center;
+  font-family:var(--mono); font-size:.68rem; color:var(--muted);
+  letter-spacing:.02em;
+}
+.win-x{ color:var(--faint); font-size:.75rem; width:22px; text-align:right; }
+
+/* ribbon */
+.ribbon{
+  display:flex; padding:8px 10px 6px;
+  border-bottom:1px solid var(--hairline-soft);
+  background:rgba(255,255,255,.02);
+  overflow:hidden;
+}
+.rgroup{
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  padding:0 12px;
+  border-right:1px solid var(--hairline-soft);
+}
+.rgroup:last-child{ border-right:none; }
+.ricons{ display:flex; gap:4px; }
+.rbtn{
+  width:26px; height:24px; border-radius:7px;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--muted);
+  border:1px solid transparent;
+}
+.rbtn.on{
+  color:var(--brass-hi);
+  background:var(--brass-soft);
+  border-color:rgba(176,141,87,.35);
+}
+.rbtn svg{ width:13px; height:13px; }
+.rlabel{
+  font-size:.5rem; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--faint);
+}
+@media (max-width:560px){
+  .rgroup:nth-child(5), .rgroup:nth-child(6){ display:none; }
+}
+
+/* body: filmstrip + canvas */
+.app-body{
+  display:grid; grid-template-columns:76px 1fr;
+  min-height:0; flex:1;
+}
+.filmstrip{
+  border-right:1px solid var(--hairline-soft);
+  padding:10px 8px;
+  display:flex; flex-direction:column; gap:8px;
+  background:rgba(0,0,0,.18);
+}
+.thumb{
+  position:relative;
+  aspect-ratio:14/9; border-radius:5px;
+  background:linear-gradient(180deg,#f4efe3,#e9e2d0);
+  border:1px solid rgba(255,255,255,.14);
+  opacity:.55;
+}
+.thumb::after{
+  content:attr(data-n);
+  position:absolute; left:4px; bottom:2px;
+  font-family:var(--mono); font-size:.52rem; color:#5a5a5e;
+}
+.thumb.current{
+  opacity:1;
+  outline:2px solid var(--blue);
+  outline-offset:1px;
+}
+.thumb.current::before{
+  content:""; position:absolute; right:4px; top:4px;
+  width:5px; height:5px; border-radius:50%; background:var(--brass);
+}
+.thumb-more{
+  text-align:center; font-family:var(--mono); font-size:.6rem; color:var(--faint);
+}
+
+/* canvas + slide */
+.canvas{
+  padding:20px 22px;
+  display:flex; align-items:center; justify-content:center;
+  background:
+    radial-gradient(500px 260px at 50% 0%, rgba(255,255,255,.03), transparent 70%),
+    rgba(0,0,0,.28);
+  min-width:0;
+}
+.slide{
+  position:relative;
+  width:100%; max-width:430px; aspect-ratio:14/9;
+  background:var(--paper);
+  border-radius:6px;
+  box-shadow:0 18px 44px rgba(0,0,0,.5);
+  color:var(--paper-ink);
+  padding:7.5% 8%;
+  overflow:hidden;
+}
+.slide-kicker{
+  font-family:var(--mono); font-size:.5rem; letter-spacing:.16em;
+  text-transform:uppercase; color:#8c8574; margin-bottom:2%;
+}
+.slide-title{
+  font-family:var(--serif); font-weight:500; font-size:clamp(.9rem, 2.6vw, 1.25rem);
+  letter-spacing:-.01em; margin-bottom:5%;
+}
+.kpis{ display:flex; gap:4.5%; margin-bottom:6%; }
+.kpi{
+  flex:1; border-radius:5px; padding:4% 4.5%;
+  border:1px solid #ddd5c2;
+  background:#fff;
+}
+.kpi .num{ font-family:var(--serif); font-size:clamp(.72rem,2vw,1rem); font-weight:600; }
+.kpi .lbl{ font-size:.5rem; color:#8c8574; letter-spacing:.04em; }
+.kpi.navy{
+  background:var(--navy); border-color:var(--navy); color:#f2eddf;
+}
+.kpi.navy .lbl{ color:#b7c4c9; }
+.chart{
+  display:flex; align-items:flex-end; gap:3.5%;
+  height:34%; padding:0 1%;
+}
+.chart i{
+  flex:1; display:block; border-radius:2px 2px 0 0;
+  background:#d6cdb6;
+}
+.chart i.hi{ background:var(--navy); }
+.slide-foot{
+  position:absolute; left:8%; right:8%; bottom:5%;
+  display:flex; justify-content:space-between;
+  font-size:.44rem; color:#a09a89; letter-spacing:.05em;
+}
+
+/* brass marks on the slide */
+.pin{
+  position:absolute; z-index:3;
+  width:18px; height:18px; border-radius:50%;
+  background:var(--brass); color:var(--navy);
+  font-family:var(--mono); font-weight:500; font-size:.62rem;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 3px 10px rgba(0,0,0,.35), 0 0 0 2px rgba(251,247,238,.85);
+}
+.region{
+  position:absolute; z-index:2;
+  border:1.5px dashed var(--brass);
+  background:rgba(176,141,87,.10);
+  border-radius:4px;
+}
+.region .pin{ top:-9px; left:-9px; }
+
+/* status bar */
+.statusbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 14px;
+  border-top:1px solid var(--hairline-soft);
+  background:rgba(255,255,255,.02);
+  font-family:var(--mono); font-size:.64rem; color:var(--muted);
+}
+.status-right{ display:flex; align-items:center; gap:10px; }
+.zoom{
+  position:relative; width:74px; height:2px; border-radius:2px;
+  background:rgba(255,255,255,.16);
+}
+.zoom::before{
+  content:""; position:absolute; left:0; top:0; height:100%; width:52%;
+  background:var(--muted); border-radius:2px;
+}
+.zoom::after{
+  content:""; position:absolute; left:52%; top:50%;
+  width:10px; height:10px; border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:#d9d9de; box-shadow:0 1px 4px rgba(0,0,0,.5);
+}
+.status-marks{ color:var(--brass-hi); }
+
+/* ------------------------------------------------------ compiled .md card */
+.mdcard{
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-panel);
+  box-shadow:var(--shadow-soft);
+  overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.mdcard-head{
+  display:flex; align-items:center; gap:10px;
+  padding:11px 16px;
+  border-bottom:1px solid var(--hairline-soft);
+  background:rgba(255,255,255,.03);
+  font-family:var(--mono); font-size:.7rem; color:var(--muted);
+}
+.mdcard-head .file{ color:var(--text); }
+.mdcard-head .badge{
+  margin-left:auto;
+  font-size:.58rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--brass-hi); background:var(--brass-soft);
+  border:1px solid rgba(176,141,87,.35);
+  border-radius:999px; padding:3px 9px; white-space:nowrap;
+}
+.mdcard pre{
+  flex:1; margin:0; padding:16px 18px 18px;
+  font-family:var(--mono); font-size:.72rem; line-height:1.75;
+  color:var(--md-val);
+  white-space:pre-wrap; word-break:break-word;
+  overflow:auto;
+}
+.mdcard .k{ color:var(--md-key); }
+.mdcard .sel{ color:var(--md-sel); }
+.mdcard .n{ color:var(--brass-hi); }
+.mdcard .cmt{ color:var(--text); font-style:italic; }
+.mdcard .dim{ color:var(--faint); }
+.mdcard-foot{
+  padding:10px 16px;
+  border-top:1px solid var(--hairline-soft);
+  font-size:.74rem; color:var(--muted);
+}
+
+/* ---------------------------------------------------------------- sections */
+section{ padding:72px 0; }
+.sec-kicker{
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--brass-hi); margin-bottom:14px;
+}
+h2{
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(1.6rem, 3.4vw, 2.3rem);
+  line-height:1.18; letter-spacing:-.01em;
+  max-width:26ch; margin-bottom:14px;
+}
+.sec-sub{ color:var(--muted); max-width:60ch; margin-bottom:44px; }
+
+.card{
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-panel);
+  box-shadow:var(--shadow-soft);
+  padding:26px 26px 28px;
+}
+
+/* steps */
+.steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+@media (max-width:860px){ .steps{ grid-template-columns:1fr; } }
+.step .n{
+  font-family:var(--serif); font-style:italic; font-size:2.1rem;
+  color:var(--brass-hi); line-height:1; display:block; margin-bottom:14px;
+}
+.step h3{
+  font-family:var(--serif); font-weight:500; font-size:1.22rem;
+  margin-bottom:10px; letter-spacing:-.005em;
+}
+.step p{ color:var(--muted); font-size:.92rem; }
+.step .tags{ margin-top:16px; display:flex; flex-wrap:wrap; gap:6px; }
+.step .tags span{
+  font-family:var(--mono); font-size:.62rem; color:var(--muted);
+  border:1px solid var(--hairline); border-radius:6px; padding:3px 8px;
+}
+
+/* mark vocabulary */
+.marks{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+@media (max-width:1000px){ .marks{ grid-template-columns:repeat(3,1fr); } }
+@media (max-width:640px){ .marks{ grid-template-columns:repeat(2,1fr); } }
+.mark{ padding:20px 18px 22px; }
+.mark .glyph{
+  width:36px; height:36px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--navy);
+  color:var(--brass-hi);
+  border:1px solid rgba(176,141,87,.4);
+  margin-bottom:14px;
+}
+.mark .glyph svg{ width:17px; height:17px; }
+.mark h3{ font-size:.96rem; font-weight:600; margin-bottom:6px; }
+.mark p{ color:var(--muted); font-size:.82rem; line-height:1.55; }
+
+/* output contract */
+.contract{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; }
+@media (max-width:860px){ .contract{ grid-template-columns:1fr; } }
+.contract h3{
+  font-family:var(--mono); font-size:.8rem; font-weight:500;
+  color:var(--text); margin-bottom:6px;
+}
+.contract .role{
+  font-family:var(--mono); font-size:.62rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--brass-hi); margin-bottom:16px; display:block;
+}
+.contract ul{ list-style:none; }
+.contract li{
+  padding:9px 0 9px 24px; position:relative;
+  color:var(--muted); font-size:.9rem;
+  border-bottom:1px solid var(--hairline-soft);
+}
+.contract li:last-child{ border-bottom:none; }
+.contract li::before{
+  content:""; position:absolute; left:2px; top:17px;
+  width:7px; height:7px; border-radius:50%;
+  background:var(--brass);
+}
+.contract li strong{ color:var(--text); font-weight:500; }
+.roadmap{
+  margin-top:22px; padding:18px 22px;
+  border:1px dashed rgba(176,141,87,.4);
+  border-radius:var(--r-el);
+  background:var(--brass-soft);
+  color:var(--muted); font-size:.9rem;
+}
+.roadmap em{ color:var(--brass-hi); font-family:var(--serif); font-size:1.02rem; }
+
+/* pricing seam */
+.seam{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media (max-width:860px){ .seam{ grid-template-columns:1fr; } }
+.plan .tier{
+  font-family:var(--mono); font-size:.62rem; letter-spacing:.14em;
+  text-transform:uppercase; padding:4px 10px; border-radius:999px;
+  display:inline-block; margin-bottom:18px;
+}
+.plan-free .tier{ color:var(--text); background:rgba(255,255,255,.08); border:1px solid var(--hairline); }
+.plan-paid .tier{ color:var(--brass-hi); background:var(--brass-soft); border:1px solid rgba(176,141,87,.35); }
+.plan h3{ font-family:var(--serif); font-weight:500; font-size:1.4rem; margin-bottom:8px; }
+.plan .whom{ color:var(--muted); font-size:.9rem; margin-bottom:20px; }
+.plan ul{ list-style:none; }
+.plan li{
+  padding:8px 0 8px 26px; position:relative;
+  font-size:.92rem; color:var(--muted);
+}
+.plan li strong{ color:var(--text); font-weight:500; }
+.plan li::before{
+  content:"✓"; position:absolute; left:2px; top:8px;
+  font-size:.8rem; color:var(--muted);
+}
+.plan-paid li::before{ color:var(--brass-hi); }
+
+/* surfaces */
+.surfaces{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; }
+@media (max-width:860px){ .surfaces{ grid-template-columns:1fr; } }
+.surface{ padding:24px 24px 26px; }
+.surface .status{
+  font-family:var(--mono); font-size:.6rem; letter-spacing:.12em;
+  text-transform:uppercase; border-radius:999px; padding:3px 10px;
+  display:inline-block; margin-bottom:16px;
+}
+.surface.now .status{ color:#7fd18a; background:rgba(40,200,64,.12); border:1px solid rgba(40,200,64,.3); }
+.surface.next .status{ color:var(--muted); background:rgba(255,255,255,.05); border:1px solid var(--hairline); }
+.surface h3{ font-size:1.02rem; font-weight:600; margin-bottom:6px; }
+.surface p{ color:var(--muted); font-size:.86rem; }
+
+/* footer */
+footer{
+  border-top:1px solid var(--hairline-soft);
+  padding:44px 0 60px;
+  margin-top:30px;
+}
+.foot-inner{ display:flex; flex-wrap:wrap; gap:18px 40px; align-items:baseline; }
+.foot-inner .wordmark{ font-size:.98rem; }
+.foot-note{ color:var(--muted); font-size:.8rem; max-width:52ch; }
+.foot-links{ margin-left:auto; display:flex; gap:20px; }
+.foot-links a{ color:var(--muted); font-size:.8rem; }
+@media (max-width:700px){ .foot-links{ margin-left:0; } }
+
+/* --------------------------------------------------- reveal (fails open) */
+/* Content is always visible by default. JS adds .anim to <html> only when
+   IntersectionObserver exists and motion is allowed; without JS (or if the
+   script fails) nothing is ever hidden. */
+.anim .reveal{
+  opacity:0; transform:translateY(14px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+.anim .reveal.in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){
+  .anim .reveal{ opacity:1; transform:none; }
+  *, *::before, *::after{ animation:none !important; transition:none !important; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="#">HyperText<span class="md-chip">MD</span></a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#marks">The marks</a>
+      <a href="#output">The output</a>
+      <a href="#pricing">Open vs. paid</a>
+      <a href="#surfaces">Surfaces</a>
+      <a class="nav-cta" href="mailto:leopoldo92@me.com?subject=HyperText%20Markdown%20alpha">Request the alpha</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ================================================================ hero -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span>HyperText Markdown · VS Code alpha</p>
+    <h1>A beautiful, <em>human</em> way to hand flawless context to the machine.</h1>
+    <p class="hero-sub">A review layer over any HTML document, PDF, or slide deck. You mark it up the way a person would — <strong>comment, box a region, highlight, move things, talk</strong>. Local code compiles every mark into a Markdown file any AI can act on, with zero guessing.</p>
+    <p class="hero-facts">offline · no AI in the loop · no account · nothing uploaded</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:leopoldo92@me.com?subject=HyperText%20Markdown%20alpha">Request the alpha</a>
+      <a class="btn btn-ghost" href="#" aria-disabled="true">Download — alpha, coming</a>
+    </div>
+
+    <div class="stage">
+      <!-- CSS-drawn app window -->
+      <div class="app reveal" role="img" aria-label="Mock of the HyperText Markdown review window: a dark glass PowerPoint-style editor showing slide 3 of a board deck, with numbered brass pins and a brass region box on a cream slide">
+        <div class="titlebar">
+          <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="doc-name">Q3-Board-Deck.html</span>
+          <span class="win-x" aria-hidden="true">✕</span>
+        </div>
+
+        <div class="ribbon" aria-hidden="true">
+          <div class="rgroup">
+            <div class="ricons">
+              <span class="rbtn on"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3.5h12v7H8l-3 3v-3H2z"/></svg></span>
+              <span class="rbtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="1.5" width="4" height="8" rx="2"/><path d="M3.5 8a4.5 4.5 0 0 0 9 0M8 12.5v2"/></svg></span>
+            </div>
+            <span class="rlabel">Comment</span>
+          </div>
+          <div class="rgroup">
+            <div class="ricons">
+              <span class="rbtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 13.5h8M5 10.5 8 2.5l3 8M6 8h4"/></svg></span>
+              <span class="rbtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 13.5h4l7-7-4-4-7 7zM8.5 4.5l3 3"/></svg></span>
+            </div>
+            <span class="rlabel">Text</span>
+          </div>
+          <div class="rgroup">
+            <div class="ricons">
+              <span class="rbtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5v13M1.5 8h13M8 1.5 6 3.5M8 1.5l2 2M8 14.5l-2-2M8 14.5l2-2M1.5 8l2-2M1.5 8l2 2M14.5 8l-2-2M14.5 8l-2 2"/></svg></span>
+              <span class="rbtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2.5h12M4.5 5.5h7v7h-7z"/></svg></span>
+            </div>
+            <span class="rlabel">Arrange</span>
+          </div>
+          <div class="rgroup">
+            <div class="ricons">
+              <span class="rbtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M8 10l-3-3M8 10l3-3M2.5 13.5h11"/></svg></span>
+            </div>
+            <span class="rlabel">Export</span>
+          </div>
+          <div class="rgroup">
+            <div class="ricons">
+              <span class="rbtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 8s2.5-4.5 6.5-4.5S14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg></span>
+            </div>
+            <span class="rlabel">View</span>
+          </div>
+          <div class="rgroup">
+            <div class="ricons">
+              <span class="rbtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg></span>
+            </div>
+            <span class="rlabel">Find</span>
+          </div>
+        </div>
+
+        <div class="app-body">
+          <div class="filmstrip" aria-hidden="true">
+            <span class="thumb" data-n="1"></span>
+            <span class="thumb" data-n="2"></span>
+            <span class="thumb current" data-n="3"></span>
+            <span class="thumb" data-n="4"></span>
+            <span class="thumb-more">⋯ 12</span>
+          </div>
+
+          <div class="canvas" aria-hidden="true">
+            <div class="slide">
+              <p class="slide-kicker">Q3 · Board Review</p>
+              <p class="slide-title">Portfolio Review</p>
+              <div class="kpis">
+                <span class="kpi navy"><span class="num">+8.4%</span><br /><span class="lbl">YTD net return</span></span>
+                <span class="kpi"><span class="num">€312m</span><br /><span class="lbl">NAV</span></span>
+                <span class="kpi"><span class="num">0.9×</span><br /><span class="lbl">Net leverage</span></span>
+              </div>
+              <div class="chart">
+                <i style="height:36%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:63%"></i><i class="hi" style="height:82%"></i><i style="height:58%"></i>
+              </div>
+              <p class="slide-foot"><span>Confidential</span><span>3 / 12</span></p>
+
+              <!-- brass marks -->
+              <span class="pin" style="top:30%; left:6%;">1</span>
+              <span class="region" style="top:56%; left:10%; width:46%; height:30%;"><span class="pin">2</span></span>
+              <span class="pin" style="bottom:9%; right:7%;">3</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="statusbar">
+          <span>Slide 3 of 12 · <span class="status-marks">4 marks</span></span>
+          <span class="status-right"><span class="zoom" aria-hidden="true"></span><span>100% · Fit</span></span>
+        </div>
+      </div>
+
+      <!-- compiled .md card -->
+      <figure class="mdcard reveal">
+        <figcaption class="mdcard-head">
+          <span class="file">Q3-Board-Deck.review.md</span>
+          <span class="badge">compiled locally</span>
+        </figcaption>
+<pre><span class="k"># review — Q3-Board-Deck.html</span>
+<span class="dim">4 marks · 12 slides · compiled offline, nothing uploaded</span>
+
+<span class="n">1.</span> <span class="sel">`#s3 &gt; div.kpi`</span> — "+8.4% YTD net return"
+   <span class="k">- comment:</span> <span class="cmt">Make this card brass on cream —
+     navy reads too heavy.</span>
+   <span class="k">- slide:</span> 3 ("Portfolio Review")
+   <span class="k">- box:</span> 64,206 · 220×130 <span class="dim">(in 1400×900)</span>
+   <span class="k">- looks:</span> background #0f2e3d · color #f2eddf
+     · font Inter
+   <span class="k">- shot:</span> attachments/mark-1.png
+
+<span class="n">2.</span> <span class="sel">`#s3 &gt; figure.chart`</span> — region
+   <span class="k">- comment:</span> <span class="cmt">The Q2 bar should be the
+     highlighted one.</span>
+   <span class="dim">…</span></pre>
+        <figcaption class="mdcard-foot">Drop this file into any AI chat. The model sees exactly what you saw — and exactly what you meant.</figcaption>
+      </figure>
+    </div>
+  </div>
+</header>
+
+<!-- ========================================================== how it works -->
+<section id="how">
+  <div class="wrap">
+    <p class="sec-kicker reveal">How it works</p>
+    <h2 class="reveal">Three steps. Only one of them is yours.</h2>
+    <p class="sec-sub reveal">The human does the human part. Local code does the tedious part. The AI does the acting — in its own chat, wherever that is.</p>
+    <div class="steps">
+      <div class="card step reveal">
+        <span class="n" aria-hidden="true">1</span>
+        <h3>Mark it up like a human</h3>
+        <p>Open the document in the review layer and react the way you would on paper: drop a comment, box a region, highlight a line, drag an object where it should be, or just say it out loud.</p>
+        <div class="tags"><span>comment</span><span>region</span><span>highlight</span><span>move</span><span>voice</span></div>
+      </div>
+      <div class="card step reveal">
+        <span class="n" aria-hidden="true">2</span>
+        <h3>Local code compiles flawless context</h3>
+        <p>No AI, no account, no upload. Plain code — running on your machine, offline — resolves every mark into selectors, positions, computed looks, and screenshots. Deterministic, every time.</p>
+        <div class="tags"><span>offline</span><span>no AI</span><span>no upload</span></div>
+      </div>
+      <div class="card step reveal">
+        <span class="n" aria-hidden="true">3</span>
+        <h3>Your AI acts — in its own chat</h3>
+        <p>Drop the compiled .md into whichever AI you already use. It knows which element, on which slide, at which coordinates, looking like what. Zero guessing, zero back-and-forth.</p>
+        <div class="tags"><span>any AI</span><span>any chat</span><span>one file</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================== mark vocabulary -->
+<section id="marks">
+  <div class="wrap">
+    <p class="sec-kicker reveal">The mark vocabulary</p>
+    <h2 class="reveal">Five marks. Brass on the page, meaning in the file.</h2>
+    <p class="sec-sub reveal">Every gesture you already know from reviewing on paper — or from PowerPoint — becomes a structured, numbered mark.</p>
+    <div class="marks">
+      <div class="card mark reveal">
+        <span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 3.5h12v7H8l-3 3v-3H2z"/></svg></span>
+        <h3>Comment</h3>
+        <p>A numbered brass pin on any element, carrying exactly what you said about it.</p>
+      </div>
+      <div class="card mark reveal">
+        <span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.5 2"><rect x="2" y="3" width="12" height="10" rx="1.5"/></svg></span>
+        <h3>Region</h3>
+        <p>Box any area of the page — the file records its exact coordinates and a shot of it.</p>
+      </div>
+      <div class="card mark reveal">
+        <span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2.5 13.5h4l7-7-4-4-7 7zM8.5 4.5l3 3"/></svg></span>
+        <h3>Highlight</h3>
+        <p>Sweep over the words that matter; the exact text lands in the Markdown, quoted.</p>
+      </div>
+      <div class="card mark reveal">
+        <span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1.5v13M1.5 8h13M8 1.5 6 3.5M8 1.5l2 2M8 14.5l-2-2M8 14.5l2-2M1.5 8l2-2M1.5 8l2 2M14.5 8l-2-2M14.5 8l-2 2"/></svg></span>
+        <h3>Move &amp; resize</h3>
+        <p>Drag and stretch objects PowerPoint-style. The from→to geometry is captured for you.</p>
+      </div>
+      <div class="card mark reveal">
+        <span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="6" y="1.5" width="4" height="8" rx="2"/><path d="M3.5 8a4.5 4.5 0 0 0 9 0M8 12.5v2"/></svg></span>
+        <h3>Voice note</h3>
+        <p>Pin what you say to where you said it. Recorded locally, attached to the mark.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================= output contract -->
+<section id="output">
+  <div class="wrap">
+    <p class="sec-kicker reveal">The output contract</p>
+    <h2 class="reveal">One review, two artifacts. Both plain files, both yours.</h2>
+    <p class="sec-sub reveal">Compilation is a contract, not a vibe: every mark ships with the context an AI needs to act without asking you anything.</p>
+    <div class="contract">
+      <div class="card reveal">
+        <h3>review.md</h3>
+        <span class="role">the AI-ready prompt</span>
+        <ul>
+          <li><strong>Slide number + title</strong>, and the heading trail down to the element</li>
+          <li><strong>Table coordinates</strong> when a mark lands inside a table</li>
+          <li><strong>Element position + computed looks</strong> — "background #0f2e3d", color, font</li>
+          <li><strong>Screenshots of each marked element</strong>, plus annotated slide shots</li>
+          <li><strong>Your words, verbatim</strong> — typed or spoken, attached to the mark</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <h3>review-memory</h3>
+        <span class="role">the comment record</span>
+        <ul>
+          <li><strong>Every comment you make</strong>, kept as a structured record beside the prompt</li>
+          <li><strong>Plain, portable data</strong> — readable without the app, no lock-in</li>
+          <li><strong>Local, like everything else</strong> — it never leaves your machine unless you send it</li>
+        </ul>
+        <p class="roadmap"><em>Where this goes:</em> told once, remembered forever. The comment record is the seed of a review memory — so the taste you show in your marks can one day be applied before you have to repeat yourself. That's the roadmap, not a shipped claim.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== pricing -->
+<section id="pricing">
+  <div class="wrap">
+    <p class="sec-kicker reveal">Open engine, paid connections</p>
+    <h2 class="reveal">The engine is open. Only the wires cost money.</h2>
+    <p class="sec-sub reveal">Everything that runs on your machine is free and open source. You pay only when something has to connect to the outside world.</p>
+    <div class="seam">
+      <div class="card plan plan-free reveal">
+        <span class="tier">Free · open source</span>
+        <h3>The engine</h3>
+        <p class="whom">Everything local. No account, no meter, no phone-home.</p>
+        <ul>
+          <li><strong>The full review layer</strong> — injected over any HTML document, PDF, or slide deck</li>
+          <li><strong>All five marks</strong> — comment, region, highlight, move/resize, voice (kept verbatim)</li>
+          <li><strong>The compiler</strong> — AI-ready .md + comment record, screenshots included</li>
+          <li><strong>Offline by design</strong> — it works on a plane, and always will</li>
+        </ul>
+      </div>
+      <div class="card plan plan-paid reveal">
+        <span class="tier">Paid · connections</span>
+        <h3>The connections</h3>
+        <p class="whom">Optional services layered on top of the open engine.</p>
+        <ul>
+          <li><strong>Voice transcription</strong> — spoken notes arrive as clean text</li>
+          <li><strong>Rephrase</strong> — your shorthand tightened into precise instructions</li>
+          <li><strong>Brain / memory</strong> — your review memory, connected and queryable</li>
+          <li><strong>Connectors</strong> — pipe compiled reviews straight into your tools</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= surfaces -->
+<section id="surfaces">
+  <div class="wrap">
+    <p class="sec-kicker reveal">Surfaces</p>
+    <h2 class="reveal">Starts where the documents are. Ends up everywhere you read.</h2>
+    <div class="surfaces">
+      <div class="card surface now reveal">
+        <span class="status">Now · alpha</span>
+        <h3>VS Code</h3>
+        <p>The review layer lives in the editor, next to the files it reviews. Unpublished alpha — <a href="mailto:leopoldo92@me.com?subject=HyperText%20Markdown%20alpha">ask for access</a>.</p>
+      </div>
+      <div class="card surface next reveal">
+        <span class="status">Next</span>
+        <h3>Mac desktop</h3>
+        <p>The same dark-glass window as its own app — drop any document on it and mark away.</p>
+      </div>
+      <div class="card surface next reveal">
+        <span class="status">Later</span>
+        <h3>iPhone &amp; iPad</h3>
+        <p>Review on the sofa with a finger or a Pencil; the compiled file is waiting when you sit back down.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- =============================================================== footer -->
+<footer>
+  <div class="wrap foot-inner">
+    <a class="wordmark" href="#">HyperText<span class="md-chip">MD</span></a>
+    <p class="foot-note">A review layer for humans, a compiler for machines. Local by default — offline, no account, nothing uploaded.</p>
+    <div class="foot-links">
+      <a href="mailto:leopoldo92@me.com?subject=HyperText%20Markdown%20alpha">leopoldo92@me.com</a>
+      <a href="#" aria-disabled="true">alpha — coming</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Staggered reveal — fails open. Content is visible without JS; the .anim
+   class (which enables the hidden initial state) is only added when
+   IntersectionObserver exists and reduced motion is not requested. */
+(function () {
+  try {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+    document.documentElement.classList.add('anim');
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) {
+          entries[i].target.classList.add('in');
+          io.unobserve(entries[i].target);
+        }
+      }
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    for (var j = 0; j < els.length; j++) {
+      els[j].style.transitionDelay = ((j % 5) * 70) + 'ms';
+      io.observe(els[j]);
+    }
+    /* Safety net: whatever happens, everything is visible after 3s. */
+    window.setTimeout(function () {
+      for (var k = 0; k < els.length; k++) { els[k].classList.add('in'); }
+    }, 3000);
+  } catch (err) {
+    document.documentElement.classList.remove('anim');
+  }
+})();
+</script>
+
+</body>
+</html>
