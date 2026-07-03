@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Account — HyperText Markdown</title>
+<meta name="description" content="Manage your HyperText Markdown account — profile, preferences, plan, and referrals." />
+<meta name="theme-color" content="#0e0e10" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F2E3D'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='28' fill='%23d9bb84' text-anchor='middle'%3EMD%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="hmd.css" />
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ============================= sidebar ============================== -->
+  <aside class="side">
+    <a class="wordmark" href="index.html">HyperText<span class="md-chip">MD</span></a>
+
+    <div class="who">
+      <span class="avatar" id="avatar" aria-hidden="true">·</span>
+      <div>
+        <div class="name" id="who-name">…</div>
+        <div class="email" id="who-email"></div>
+      </div>
+    </div>
+
+    <nav aria-label="Account sections">
+      <a class="snav on" href="#profile" data-pane="profile">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5" r="3"/><path d="M2.5 14c.8-2.6 3-4 5.5-4s4.7 1.4 5.5 4"/></svg>
+        Profile
+      </a>
+      <a class="snav" href="#preferences" data-pane="preferences">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 5h8M12 5h2M2 11h2M6 11h8"/><circle cx="11" cy="5" r="1.6"/><circle cx="5" cy="11" r="1.6"/></svg>
+        Preferences
+      </a>
+      <a class="snav" href="#billing" data-pane="billing">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="9" rx="2"/><path d="M1.5 6.5h13"/></svg>
+        Billing
+      </a>
+      <a class="snav" href="#referrals" data-pane="referrals">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="6" width="12" height="8" rx="1.5"/><path d="M8 6v8M2 8.5h12M8 6C6 6 4.5 4.8 4.5 3.6 4.5 2.6 5.3 2 6.2 2 7.5 2 8 3.6 8 6zm0 0c2 0 3.5-1.2 3.5-2.4C11.5 2.6 10.7 2 9.8 2 8.5 2 8 3.6 8 6z"/></svg>
+        Referrals
+      </a>
+      <a class="snav danger" href="#danger" data-pane="danger">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 2 1.5 13.5h13L8 2z"/><path d="M8 6.5v3.2M8 11.8v.2"/></svg>
+        Danger zone
+      </a>
+    </nav>
+
+    <span class="spacer"></span>
+    <button class="btn btn-glass btn-sm signout" type="button" id="signout">Sign out</button>
+  </aside>
+
+  <!-- =============================== main =============================== -->
+  <main class="main">
+
+    <!-- ······································································ profile -->
+    <section class="pane on" id="pane-profile" aria-labelledby="h-profile">
+      <h1 id="h-profile">Profile</h1>
+      <p class="pane-sub">How you appear on exports and in the connected extras. Nothing here is required — the free tier never asks who you are.</p>
+
+      <p class="group-label">Account</p>
+      <div class="card rows">
+        <div class="row">
+          <div class="row-info">
+            <div class="lbl">Email</div>
+            <div class="hint">The address you sign in with.</div>
+          </div>
+          <div class="row-ctl auto"><span class="static" id="profile-email">—</span></div>
+        </div>
+        <div class="row">
+          <div class="row-info">
+            <div class="lbl">Full name</div>
+          </div>
+          <div class="row-ctl"><input class="input" id="f-name" placeholder="Leopoldo Caciolli" autocomplete="name" /></div>
+        </div>
+        <div class="row">
+          <div class="row-info">
+            <div class="lbl">Reviewer acronym</div>
+            <div class="hint">Up to 5 characters. It appears on export titles in brackets — <code id="acronym-demo">Q3-Deck.review.md · by [LEO]</code></div>
+          </div>
+          <div class="row-ctl"><input class="input" id="f-acronym" placeholder="LEO" maxlength="5" style="text-transform:uppercase" autocomplete="off" /></div>
+        </div>
+        <div class="row">
+          <div class="row-info">
+            <div class="lbl">Company</div>
+          </div>
+          <div class="row-ctl"><input class="input" id="f-company" placeholder="Themis" autocomplete="organization" /></div>
+        </div>
+      </div>
+
+      <div class="save-bar">
+        <button class="btn btn-primary btn-sm" type="button" id="save-profile">Save changes</button>
+        <span class="save-note" id="profile-saved"><span class="ok">✓</span> Saved</span>
+      </div>
+    </section>
+
+    <!-- ··································································· preferences -->
+    <section class="pane" id="pane-preferences" aria-labelledby="h-preferences">
+      <h1 id="h-preferences">Preferences</h1>
+      <p class="pane-sub">Defaults for the review apps. Changes save on their own.</p>
+
+      <p class="group-label">Appearance</p>
+      <div class="card rows">
+        <div class="row">
+          <div class="row-info">
+            <div class="lbl">Theme</div>
+            <div class="hint">Applies inside the review window on every surface.</div>
+          </div>
+          <div class="row-ctl" style="width:160px">
+            <select class="select" id="p-theme" aria-label="Theme">
+              <option value="system">System</option>
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <p class="group-label">Default view</p>
+      <div class="card rows">
+        <div class="row">
+          <div class="row-info">
+            <div class="lbl">Open documents in Fit view</div>
+            <div class="hint">Whole page visible when a document opens.</div>
+          </div>
+          <div class="row-ctl auto">
+            <label class="switch"><input type="checkbox" id="p-fit" /><span class="knob"></span></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-info">
+            <div class="lbl">Show mark numbers on the page</div>
+            <div class="hint">The numbered brass pins next to every mark.</div>
+          </div>
+          <div class="row-ctl auto">
+            <label class="switch"><input type="checkbox" id="p-marks" /><span class="knob"></span></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-info">
+            <div class="lbl">Auto-compile on save</div>
+            <div class="hint">Rebuild the review .md every time you save a mark.</div>
+          </div>
+          <div class="row-ctl auto">
+            <label class="switch"><input type="checkbox" id="p-autocompile" /><span class="knob"></span></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ······································································ billing -->
+    <section class="pane" id="pane-billing" aria-labelledby="h-billing">
+      <h1 id="h-billing">Billing</h1>
+      <p class="pane-sub">The engine is free forever. Pro adds the connected extras when billing opens at alpha.</p>
+
+      <p class="group-label">Current plan</p>
+      <div class="card plan-now">
+        <div>
+          <span class="tier">Your plan</span>
+          <h2 id="plan-name">Basic</h2>
+          <p class="whom">Everything local — the full review layer, all five marks, and the compiler. Free, offline, no meter.</p>
+        </div>
+        <div class="price">€0 <small>per month</small></div>
+      </div>
+
+      <p class="group-label">Compare plans</p>
+      <div class="compare">
+        <div class="card plan plan-free">
+          <span class="tier">Basic · free</span>
+          <h3>Basic</h3>
+          <p class="price-line"><strong>€0</strong> / month — forever</p>
+          <ul>
+            <li><strong>The full review layer</strong> — over any HTML document, PDF, or slide deck</li>
+            <li><strong>All five marks</strong> — comment, region, highlight, move/resize, voice</li>
+            <li><strong>The compiler</strong> — AI-ready .md with screenshots, built locally</li>
+            <li><strong>Offline by design</strong> — no account needed to work</li>
+          </ul>
+        </div>
+        <div class="card plan plan-pro">
+          <span class="tier">Pro · connections</span>
+          <h3>Pro</h3>
+          <p class="price-line"><strong>€— / month</strong> — price set at alpha</p>
+          <ul>
+            <li><strong>Cloud memory</strong> — your review memory, connected and queryable</li>
+            <li><strong>Live AI connector</strong> — pipe compiled reviews straight into your AI</li>
+            <li><strong>Voice transcription</strong> — spoken notes arrive as clean text</li>
+            <li><strong>Multi-device sync</strong> — marks and settings follow you across surfaces</li>
+          </ul>
+          <button class="btn btn-glass btn-sm cta" type="button" id="upgrade">Upgrade to Pro</button>
+        </div>
+      </div>
+
+      <p class="billing-note"><em>Billing opens at alpha.</em> Nothing to pay today — Pro features switch on for early users first. On iPhone and iPad, subscriptions will go through the App Store.</p>
+    </section>
+
+    <!-- ···································································· referrals -->
+    <section class="pane" id="pane-referrals" aria-labelledby="h-referrals">
+      <h1 id="h-referrals">Referrals</h1>
+      <p class="pane-sub">Share HyperText Markdown with people who still review documents by screenshot.</p>
+
+      <div class="card ref-card">
+        <span class="new">Founding users</span>
+        <h2>Know someone who'd like to stop repeating themselves to an AI?</h2>
+        <p class="sub">Send them your link. When billing opens at alpha, you both get Pro time for free.</p>
+        <div class="ref-link">
+          <span class="url" id="ref-url">…</span>
+          <button class="btn btn-glass btn-sm" type="button" id="copy-ref">Copy link</button>
+        </div>
+      </div>
+
+      <p class="group-label">How it works</p>
+      <div class="card rows steps3">
+        <div class="s">
+          <span class="n">1</span>
+          <div><div class="t">Share your link</div><div class="d">Send it to people who review decks, reports, or PDFs with an AI in the loop.</div></div>
+        </div>
+        <div class="s">
+          <span class="n">2</span>
+          <div><div class="t">They create a free account</div><div class="d">Signing up with your link connects them to you. The free tier is the full engine.</div></div>
+        </div>
+        <div class="s">
+          <span class="n">3</span>
+          <div><div class="t">You both bank Pro time</div><div class="d">Credited automatically when billing opens at alpha — no codes to redeem.</div></div>
+        </div>
+      </div>
+
+      <p class="group-label">A few rules</p>
+      <div class="card rows">
+        <ol class="rules">
+          <li>They must be new to HyperText Markdown — no existing account.</li>
+          <li>One reward per person you refer, however many devices they use.</li>
+          <li>Banked Pro time is applied when billing opens; it never expires before that.</li>
+          <li>No self-referrals — a second account of your own doesn't count.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ······································································· danger -->
+    <section class="pane" id="pane-danger" aria-labelledby="h-danger">
+      <h1 id="h-danger">Danger zone</h1>
+      <p class="pane-sub">The one button we hope you never need.</p>
+
+      <div class="card rows danger-card">
+        <div class="row">
+          <div class="row-info">
+            <div class="lbl">Delete my account</div>
+            <div class="hint">Removes your account, profile, and referral link. Your local files and marks are untouched — they were never up here. This cannot be undone.</div>
+          </div>
+          <div class="row-ctl auto">
+            <button class="btn btn-danger btn-sm" type="button" id="delete-account">Delete my account</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============================ confirm modal ============================ -->
+<div class="modal-veil" id="modal-veil" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+  <div class="modal">
+    <h2 id="modal-title">Delete this account?</h2>
+    <p id="modal-body">Your account, profile, and referral link will be removed. Your local files and compiled reviews stay on your machine. This cannot be undone.</p>
+    <div class="acts">
+      <button class="btn btn-glass btn-sm" type="button" id="modal-cancel">Keep my account</button>
+      <button class="btn btn-danger btn-sm" type="button" id="modal-confirm">Delete it</button>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="vendor/supabase.js"></script>
+<script src="auth.js"></script>
+<script>
+(function () {
+  "use strict";
+  var auth = window.HMDAuth;
+
+  /* ------------------------------------------------------- session guard */
+  auth.getSession().then(function (s) {
+    if (!s) { window.location.replace("index.html"); return; }
+    boot(s);
+  });
+
+  function boot(session) {
+
+    /* --------------------------------------------------------- sidebar id */
+    var email = session.user.email || "";
+    document.getElementById("who-email").textContent = email;
+    document.getElementById("profile-email").textContent = email;
+
+    function paintIdentity(profile) {
+      var name = (profile && profile.full_name) || "";
+      document.getElementById("who-name").textContent = name || email.split("@")[0] || "Your account";
+      var initial = (name || email || "·").trim().charAt(0).toUpperCase();
+      document.getElementById("avatar").textContent = initial || "·";
+    }
+
+    /* ------------------------------------------------------- pane routing */
+    var links = document.querySelectorAll(".snav");
+    function show(pane) {
+      Array.prototype.forEach.call(document.querySelectorAll(".pane"), function (p) {
+        p.classList.toggle("on", p.id === "pane-" + pane);
+      });
+      Array.prototype.forEach.call(links, function (l) {
+        l.classList.toggle("on", l.getAttribute("data-pane") === pane);
+      });
+      window.scrollTo(0, 0);
+    }
+    function route() {
+      var pane = (window.location.hash || "#profile").slice(1);
+      if (!document.getElementById("pane-" + pane)) pane = "profile";
+      show(pane);
+    }
+    window.addEventListener("hashchange", route);
+    route();
+
+    /* ------------------------------------------------------------ profile */
+    var fName = document.getElementById("f-name");
+    var fAcr = document.getElementById("f-acronym");
+    var fCo = document.getElementById("f-company");
+
+    auth.getProfile().then(function (p) {
+      p = p || {};
+      fName.value = p.full_name || "";
+      fAcr.value = p.acronym || "";
+      fCo.value = p.company || "";
+      paintIdentity(p);
+      demoAcronym();
+    });
+
+    function demoAcronym() {
+      var a = (fAcr.value || "LEO").toUpperCase();
+      document.getElementById("acronym-demo").textContent = "Q3-Deck.review.md · by [" + a + "]";
+    }
+    fAcr.addEventListener("input", function () {
+      fAcr.value = fAcr.value.toUpperCase().slice(0, 5);
+      demoAcronym();
+    });
+
+    document.getElementById("save-profile").addEventListener("click", function () {
+      var payload = { full_name: fName.value.trim(), acronym: fAcr.value.trim(), company: fCo.value.trim() };
+      auth.saveProfile(payload).then(function (res) {
+        if (!res.ok) { auth.toast(res.message || "Couldn't save — try again."); return; }
+        paintIdentity(payload);
+        var note = document.getElementById("profile-saved");
+        note.classList.add("show");
+        setTimeout(function () { note.classList.remove("show"); }, 2400);
+      });
+    });
+
+    /* --------------------------------------------------------- preferences */
+    var pTheme = document.getElementById("p-theme");
+    var pFit = document.getElementById("p-fit");
+    var pMarks = document.getElementById("p-marks");
+    var pAuto = document.getElementById("p-autocompile");
+
+    auth.getPrefs().then(function (p) {
+      pTheme.value = p.theme || "system";
+      pFit.checked = !!p.fitView;
+      pMarks.checked = !!p.markNumbers;
+      pAuto.checked = !!p.autoCompile;
+    });
+
+    function savePrefs() {
+      auth.savePrefs({
+        theme: pTheme.value,
+        fitView: pFit.checked,
+        markNumbers: pMarks.checked,
+        autoCompile: pAuto.checked
+      }).then(function () { auth.toast("Preference saved"); });
+    }
+    [pTheme, pFit, pMarks, pAuto].forEach(function (el) {
+      el.addEventListener("change", savePrefs);
+    });
+
+    /* -------------------------------------------------------------- billing */
+    auth.getEntitlements().then(function (e) {
+      var pretty = { free: "Basic", pro: "Pro" };
+      document.getElementById("plan-name").textContent = pretty[e.plan] || e.plan;
+    });
+    document.getElementById("upgrade").addEventListener("click", function () {
+      auth.toast("Billing opens at alpha — Basic is everything for now.");
+    });
+
+    /* ------------------------------------------------------------ referrals */
+    auth.getReferralCode().then(function (code) {
+      document.getElementById("ref-url").textContent = "https://hypertextmd.com/join/" + (code || "…");
+    });
+    document.getElementById("copy-ref").addEventListener("click", function () {
+      var url = document.getElementById("ref-url").textContent;
+      function done() { auth.toast("Referral link copied"); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done, function () { fallbackCopy(url); done(); });
+      } else {
+        fallbackCopy(url); done();
+      }
+    });
+    function fallbackCopy(text) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      ta.remove();
+    }
+
+    /* ---------------------------------------------------------- danger zone */
+    var veil = document.getElementById("modal-veil");
+    function openModal() { veil.hidden = false; veil.classList.add("on"); document.getElementById("modal-cancel").focus(); }
+    function closeModal() { veil.classList.remove("on"); veil.hidden = true; }
+
+    document.getElementById("delete-account").addEventListener("click", openModal);
+    document.getElementById("modal-cancel").addEventListener("click", closeModal);
+    veil.addEventListener("click", function (e) { if (e.target === veil) closeModal(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !veil.hidden) closeModal(); });
+
+    document.getElementById("modal-confirm").addEventListener("click", function () {
+      auth.deleteAccount().then(function () {
+        closeModal();
+        window.location.href = "index.html";
+      });
+    });
+
+    /* ------------------------------------------------------------- sign out */
+    document.getElementById("signout").addEventListener("click", function () {
+      auth.signOut().then(function () { window.location.href = "index.html"; });
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
